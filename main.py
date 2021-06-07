@@ -8,18 +8,19 @@ from matplotlib import pyplot as plt
 
 
 PIXEL_LENGTH = 500
-TOP_LEFT_PT = (-1, 0)
-M_SCALE = 0.3
+CENTER_PT = (-.5, -.33)
+M_SCALE = 0.2
 
 
 class Mandelbrot():
-    def __init__(self, pixel_length, top_left=(-1, 1), scale=1, bailout=4, max_iterations=1000):
+    def __init__(self, pixel_length, center=(-1., 1.), scale=1., bailout=4., max_iterations=1000):
         self.pixel_length = pixel_length
         self.img = np.zeros([self.pixel_length, self.pixel_length])
-        self.top_left = top_left
+        self.center = center
         self.scale = scale
         self.bailout = bailout
         self.max_iterations = max_iterations
+        self.top_left = (center[0]-(scale/2), center[1]-(scale/2))
 
     def map_pixel(self, pixel):
         x = self.top_left[0] + (pixel[0] * self.scale)/self.pixel_length
@@ -51,7 +52,7 @@ class Mandelbrot():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    mandelbrot1 = Mandelbrot(pixel_length=PIXEL_LENGTH, top_left=TOP_LEFT_PT, scale=M_SCALE)
+    mandelbrot1 = Mandelbrot(pixel_length=PIXEL_LENGTH, center=CENTER_PT, scale=M_SCALE)
     mandelbrot1.sample_and_display()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
