@@ -2,8 +2,9 @@ from numba import cuda
 import numpy as np
 import matplotlib.pyplot as plt
 
-XMIN, XMAX, YMIN, YMAX = (-.378, -.369, -.664, -.655)
-ROW, COL = (1000, 1000)
+#XMIN, XMAX, YMIN, YMAX = (-.378, -.369, -.664, -.655)
+XMIN, XMAX, YMIN, YMAX = (-1.6, 0.6, -1, 1)
+ROW, COL = (1000, 1000)  # cannot have more COL than ROW
 NUM_TICKS = 10
 ITERATIONS = 100
 BAILOUT = 4
@@ -15,9 +16,8 @@ def mandelbrot_kernel(data, xlow, xhigh, ylow, yhigh):
     ty = cuda.blockIdx.x
     bw = cuda.blockDim.x
 
-    def mapFromTo(x, a, b, c, d):
-        y = (x - a) / (b - a) * (d - c) + c
-        return y
+    def mapFromTo(location, old_low, old_high, new_low, new_high):
+        return (location - old_low) / (old_high - old_low) * (new_high - new_low) + new_low
 
     x = mapFromTo(tx, 0, COL, xlow, xhigh)
     y = mapFromTo(ty, 0, ROW, ylow, yhigh)
