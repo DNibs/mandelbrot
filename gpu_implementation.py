@@ -4,9 +4,11 @@ import matplotlib.pyplot as plt
 
 #XMIN, XMAX, YMIN, YMAX = (-.378, -.369, -.664, -.655)
 XMIN, XMAX, YMIN, YMAX = (-1.6, 0.6, -1, 1)
+XMIN, XMAX, YMIN, YMAX = (-.479, -.476, .0493, .0523)
+# XMIN, XMAX, YMIN, YMAX = (-.236, -.23, -.762, -.756)
 ROW, COL = (1000, 1000)  # cannot have more COL than ROW
 NUM_TICKS = 10
-ITERATIONS = 100
+ITERATIONS = 200
 BAILOUT = 4
 
 
@@ -24,12 +26,12 @@ def mandelbrot_kernel(data, xlow, xhigh, ylow, yhigh):
     c = complex(x, y)
     z = 0.0j
     for i in range(ITERATIONS):
-        z = z ** 2 + c
+        z = z ** 3 + c
         if (z.real ** 2 + z.imag ** 2) >= BAILOUT:
             data[ty, tx] = i
             break
         else:
-            data[ty, tx] = 100
+            data[ty, tx] = ITERATIONS
 
 
 plot = np.zeros([ROW, COL])
@@ -42,5 +44,6 @@ xlabels = np.arange(XMIN, XMAX, (XMAX-XMIN)/NUM_TICKS)[0:NUM_TICKS]
 ax.set_xticklabels([str(round(float(xlabel), 5)) for xlabel in xlabels], rotation=45, ha='right')
 ylabels = np.arange(YMIN, YMAX, (YMAX-YMIN)/NUM_TICKS)[0:NUM_TICKS]
 ax.set_yticklabels([str(round(float(ylabel), 5)) for ylabel in ylabels])
-im = ax.imshow(plot, cmap="RdBu", interpolation="bilinear")
+im = ax.imshow(np.log(plot), cmap="RdBu", interpolation="bilinear")
+# im = ax.imshow(plot, cmap="RdBu")
 plt.show()
